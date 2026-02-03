@@ -1,366 +1,242 @@
-```html
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Bandes | Quitação antecipada (VP) • Tabela Price</title>
+  <title>Renegociação | Quitação antecipada (VP)</title>
   <style>
     :root{
-      --bandes-blue:#2a98cc;
-      --bandes-blue-dark:#1f7daa;
-      --bg:#eaf3f9;
+      --bg:#f3f9ff;
       --card:#ffffff;
-      --border:#d7e6f2;
-      --text:#0f2233;
+      --ink:#0f2233;
       --muted:#5a7286;
-      --field:#ffffff;
-      --field-border:#cfe0ee;
-      --focus:rgba(42,152,204,.25);
-      --btn:#2a98cc;
-      --btn-hover:#238ab9;
-      --btn-ghost:#ffffff;
-      --ok:#0f7a4b;
-      --warn:#b06a00;
+      --brand:#1f7daa;
+      --brand2:#2c95d6;
+      --line:#d7e6f2;
+      --soft:#edf4fb;
       --danger:#b00020;
-      --payoff:#b00020;
-      --payoff-bg:#fff1f3;
-      --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;
-      --sans:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-      --radius:10px;
+      --dangerSoft:#fdecee;
+      --ok:#0a7a3c;
+      --okSoft:#e7f6ee;
+      --shadow: 0 10px 30px rgba(15,34,51,.08);
+      --radius:14px;
     }
     *{box-sizing:border-box}
-    body{ margin:0; font-family:var(--sans); color:var(--text); background:var(--bg); }
-    .topbar{ background:var(--bandes-blue); color:#fff; padding:18px; }
-    .topbar-inner{ max-width:1160px; margin:0 auto; display:flex; align-items:center; gap:14px; }
-    .logo{ height:42px; width:auto; display:block; }
-    .topbar h1{ margin:0; font-size:18px; font-weight:800; letter-spacing:.2px; }
-    .topbar .subtitle{ margin:4px 0 0; font-size:13px; opacity:.9; }
-    .wrap{ max-width:1160px; margin:18px auto 32px; padding:0 18px; }
-    .crumb{ font-size:12px; color:var(--muted); margin:6px 0 14px; }
-    .page-title{
-      background:var(--bandes-blue);
-      border-radius:var(--radius);
-      padding:18px;
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--ink);
+      background:var(--bg);
+    }
+    .wrap{max-width:1200px;margin:28px auto;padding:0 16px;}
+    .hero{
+      background:linear-gradient(90deg,var(--brand),var(--brand2));
       color:#fff;
-      font-weight:900;
-      font-size:22px;
+      border-radius:16px;
+      padding:18px 22px;
+      box-shadow: var(--shadow);
+      font-weight:800;
+      font-size:28px;
       letter-spacing:.2px;
     }
-
-    .panel{
+    .grid{display:grid;grid-template-columns: 1.1fr .9fr; gap:16px; margin-top:16px;}
+    @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
+    .card{
       background:var(--card);
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      margin-top:14px;
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
       overflow:hidden;
     }
-    .panel-hd{
+    .card .hd{
       padding:14px 16px;
-      border-bottom:1px solid var(--border);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      background:#f7fbff;
+      background: #f7fbff;
+      border-bottom:1px solid var(--line);
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      font-weight:800;
     }
-    .panel-hd .ttl{
-      font-weight:900;
-      font-size:13px;
-      letter-spacing:.3px;
-      text-transform:uppercase;
-      color:#183549;
-    }
-    .pill{
-      font-family:var(--mono);
-      font-size:11px;
-      color:#183549;
-      background:#eef6fd;
-      border:1px solid var(--border);
-      border-radius:999px;
+    .badge{
+      font-size:12px;
       padding:6px 10px;
+      border-radius:999px;
+      background: var(--okSoft);
+      color: var(--ok);
+      border:1px solid rgba(10,122,60,.2);
+      font-weight:700;
+      display:none;
       white-space:nowrap;
     }
-    .panel-bd{ padding:16px; }
-
-    .split{ display:grid; grid-template-columns: 1.05fr .95fr; gap:14px; }
-    @media (max-width:1100px){ .split{ grid-template-columns:1fr; } }
-
-    .grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-    @media (max-width:960px){ .grid{ grid-template-columns:1fr; } }
-
-    label{ display:block; font-size:12px; color:var(--muted); margin-bottom:6px; }
-    input,select,textarea{
+    .content{padding:16px;}
+    .twoCol{display:grid;grid-template-columns: 1fr 1fr; gap:12px;}
+    @media (max-width: 620px){ .twoCol{grid-template-columns:1fr} }
+    label{display:block;font-size:12px;color:var(--muted);margin:2px 0 6px;}
+    input, select, textarea{
       width:100%;
-      padding:10px;
-      border-radius:8px;
-      border:1px solid var(--field-border);
-      background:var(--field);
-      color:var(--text);
+      padding:11px 12px;
+      border:1px solid var(--line);
+      border-radius:12px;
+      background:#fff;
       font-size:14px;
+      color:var(--ink);
       outline:none;
     }
-    textarea{ min-height:72px; resize:vertical; }
-    input:focus,select:focus,textarea:focus{
-      box-shadow:0 0 0 4px var(--focus);
-      border-color:#9ecfe7;
-    }
-
-    .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:12px; }
+    input:focus, select:focus, textarea:focus{border-color:#9fd0ee; box-shadow:0 0 0 3px rgba(44,149,214,.15)}
+    .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;}
     .btn{
       border:0;
-      padding:10px 14px;
       border-radius:999px;
-      font-weight:900;
+      padding:11px 16px;
+      font-weight:800;
       cursor:pointer;
-      background:var(--btn);
-      color:#fff;
-      font-size:13px;
+      transition: transform .05s ease, filter .2s ease;
+      user-select:none;
     }
-    .btn:hover{ background:var(--btn-hover); }
-    .btn.secondary{
-      background:var(--btn-ghost);
-      color:var(--bandes-blue-dark);
-      border:1px solid #9ecfe7;
-    }
-    .btn.secondary:hover{ background:#f2f9ff; }
-    .btn[disabled]{ opacity:.55; cursor:not-allowed; }
-
-    .inlineStatus{
-      margin-top:10px;
-      padding:10px 12px;
-      border-radius:10px;
-      border:1px solid var(--border);
-      background:#fbfdff;
-      font-size:12px;
-      color:var(--muted);
-    }
-    .inlineStatus.ok{ border-color:#bfe8d4; background:#e9fbf2; color:var(--ok); }
-    .inlineStatus.warn{ border-color:#f1d2a5; background:#fff5e6; color:var(--warn); }
-    .inlineStatus.err{ border-color:#f3b3c1; background:#fff1f3; color:var(--danger); }
-
-    .kpis{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:12px; }
-    @media (max-width:960px){ .kpis{ grid-template-columns:1fr; } }
-
+    .btn:active{transform: translateY(1px)}
+    .btn.primary{background:var(--brand); color:#fff;}
+    .btn.ghost{background:#fff; color:var(--brand); border:1px solid rgba(31,125,170,.35);}
+    .btn.red{background:var(--danger); color:#fff;}
+    .btn:disabled{opacity:.55; cursor:not-allowed}
     .kpi{
-      border:1px solid var(--border);
-      border-radius:12px;
-      padding:12px;
-      background:#fbfdff;
-    }
-    .kpi .lbl{ font-size:12px; color:var(--muted); margin-bottom:6px; }
-    .kpi .val{ font-family:var(--mono); font-weight:900; font-size:15px; }
-    .kpi.big{
-      grid-column:1/-1;
-      border-color:#bfe8d4;
-      background:#e9fbf2;
-    }
-    .kpi.big .lbl{ color:#0f5a3a; font-weight:800; }
-    .kpi.big .val{ font-size:22px; color:#0f5a3a; }
-
-    .note{ margin-top:10px; font-size:12px; color:var(--muted); line-height:1.45; }
-    .note.mono{ font-family:var(--mono); }
-
-    table{ width:100%; border-collapse:collapse; margin-top:10px; font-size:13px; }
-    thead th{
-      text-align:left;
-      font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:.25px;
-      color:#183549;
-      padding:10px;
-      background:#f7fbff;
-      border-bottom:1px solid var(--border);
-    }
-    tbody td{ padding:9px 10px; border-bottom:1px solid #edf4fb; font-family:var(--mono); }
-    .right{ text-align:right; }
-
-    tr.eventRow td{
-      background:var(--payoff-bg);
-      border-bottom:1px solid #f3b3c1;
-      color:var(--payoff);
-      font-weight:900;
-      font-family:var(--sans);
-    }
-    tr.remaining td{ background:#fff8fa; }
-
-    /* Auditoria colapsável (minimalismo) */
-    details.audit{
-      margin-top:14px;
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      background:#fff;
-      overflow:hidden;
-    }
-    details.audit > summary{
-      cursor:pointer;
-      padding:14px 16px;
-      font-weight:900;
-      text-transform:uppercase;
-      letter-spacing:.3px;
-      font-size:13px;
-      color:#183549;
-      background:#f7fbff;
-      list-style:none;
-    }
-    details.audit[open] > summary{ border-bottom:1px solid var(--border); }
-
-    /* Relatório / PDF */
-    .report{
-      background:#fff;
-      padding:16px;
-    }
-    .report h2{ margin:0 0 8px; font-size:18px; }
-    .report .lead{ margin:0 0 12px; font-size:13px; color:var(--muted); line-height:1.45; }
-    .report .meta{
-      border:1px solid var(--border);
-      border-radius:12px;
-      padding:12px;
-      background:#fbfdff;
-      font-family:var(--mono);
-      font-size:12px;
-      white-space:pre-wrap;
-    }
-    .report .summaryGrid{
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap:12px;
-      margin-top:12px;
-    }
-    @media (max-width:960px){ .report .summaryGrid{ grid-template-columns:1fr; } }
-    .report .summaryBox{
-      border:1px solid #bfe8d4;
-      border-radius:12px;
+      border:1px solid rgba(176,0,32,.25);
+      background:var(--dangerSoft);
+      border-radius:16px;
       padding:14px;
-      background:#e9fbf2;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:10px;
     }
-    .report .summaryBox .tag{
-      font-size:12px;
+    .kpi .big{
+      font-size:28px;
       font-weight:900;
       letter-spacing:.2px;
-      color:#0f5a3a;
-      text-transform:uppercase;
-      margin-bottom:6px;
+      color:var(--danger);
+      margin:0;
     }
-    .report .summaryBox .amount{
-      font-family:var(--mono);
+    .kpi .sub{font-size:12px;color:#7b2a36;font-weight:700}
+    .miniCards{display:grid;grid-template-columns: 1fr 1fr 1fr; gap:10px;}
+    @media (max-width: 620px){ .miniCards{grid-template-columns:1fr} }
+    .mini{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:10px;
+    }
+    .mini .t{font-size:12px;color:var(--muted);font-weight:700;margin-bottom:4px}
+    .mini .v{font-size:14px;font-weight:900}
+    .note{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.35}
+    .sectionTitle{
       font-weight:900;
-      font-size:24px;
-      color:#0f5a3a;
+      margin: 18px 0 10px;
     }
-    .report .summaryBox .small{
-      margin-top:8px;
-      font-size:12px;
-      color:#0f5a3a;
-      line-height:1.45;
-    }
-    .report .techBox{
-      border:1px solid var(--border);
+    table{
+      width:100%;
+      border-collapse:collapse;
+      overflow:hidden;
       border-radius:12px;
-      padding:14px;
+      border:1px solid var(--line);
+      background:#fff;
+    }
+    th, td{
+      padding:10px 10px;
+      border-bottom:1px solid var(--soft);
+      font-size:13px;
+      text-align:right;
+      white-space:nowrap;
+    }
+    th{background:#f7fbff;color:#183549;font-weight:900}
+    td:first-child, th:first-child{text-align:center}
+    td:nth-child(2), th:nth-child(2){text-align:left}
+    tr:last-child td{border-bottom:0}
+    tr.eventRow td{
+      background: var(--dangerSoft);
+      color: var(--danger);
+      font-weight:900;
+      text-align:left !important;
+    }
+    tr.eventRow td span.small{color:#7b2a36;font-weight:800;font-size:12px}
+    .collapse{
+      border-top:1px solid var(--line);
       background:#fbfdff;
-      font-size:12px;
-      color:var(--text);
-      line-height:1.5;
     }
-    #timelineBox{ padding:12px; overflow:hidden; border:1px solid var(--border); border-radius:12px; background:#fff; }
-    #timelineBox svg{ display:block; width:100%; height:auto; }
-
-    .screenOnly{ display:block; }
-    .printOnly{ display:none; }
-
-    @media print{
-      body{ background:#fff; }
-      .topbar, .page-title, .crumb, .panel:not(.printKeep), .screenOnly{ display:none !important; }
-      .printOnly{ display:block !important; }
-      .wrap{ max-width:none; margin:0; padding:0; }
-      details.audit{ border:0; }
-      details.audit > summary{ display:none !important; }
-      .report{ padding:0; }
-      table{ font-size:11px; }
-      thead th{ font-size:10px; }
+    .collapse summary{
+      cursor:pointer;
+      padding:12px 16px;
+      font-weight:900;
+      color:#183549;
+      list-style:none;
     }
-
-    /* Toast */
+    .collapse summary::-webkit-details-marker{display:none}
+    .collapse .inner{padding:0 16px 16px;color:var(--muted);font-size:12px;line-height:1.35}
     .toast{
-      position:fixed;
-      right:16px;
-      bottom:16px;
-      background:#0f2233;
-      color:#fff;
-      padding:10px 12px;
-      border-radius:12px;
-      font-size:12px;
-      opacity:0;
-      transform:translateY(8px);
-      transition:opacity .2s ease, transform .2s ease;
-      max-width:320px;
-      z-index:9999;
+      position:fixed; left:50%; transform:translateX(-50%);
+      bottom:18px;
+      background:#0f2233; color:#fff;
+      padding:10px 14px; border-radius:999px;
+      font-weight:800; font-size:13px;
+      box-shadow: 0 12px 30px rgba(0,0,0,.2);
+      opacity:0; pointer-events:none;
+      transition:opacity .25s ease, transform .25s ease;
     }
-    .toast.show{ opacity:1; transform:translateY(0); }
+    .toast.show{opacity:1; transform:translateX(-50%) translateY(-3px);}
+    .spinner{
+      width:14px;height:14px;border-radius:999px;border:2px solid rgba(255,255,255,.4);
+      border-top-color:#fff; display:inline-block; vertical-align:-2px; margin-right:8px;
+      animation: spin .8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg);} }
+
+    /* Minimal SVG diagram wrapper */
+    .diagramWrap{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:16px;
+      padding:12px;
+    }
+    .diagramTitle{font-weight:900;color:#183549;margin:0 0 8px}
+    .diagramHint{font-size:12px;color:var(--muted);margin:8px 0 0}
+    .mutedRow{color:var(--muted);font-size:12px}
   </style>
 </head>
 <body>
-  <div class="topbar">
-    <div class="topbar-inner">
-      <img class="logo" alt="Bandes" src="https://www.bandes.com.br/Content/NovoSite/assets/img/LogoBandesBrancoR.PNG" />
-      <div>
-        <h1>Renegociação</h1>
-        <div class="subtitle">Quitação antecipada (VP das vincendas) • Tabela Price • Relatório imprimível</div>
-      </div>
-    </div>
-  </div>
-
   <div class="wrap">
-    <div class="crumb">Home / Renegociação / Faça sua proposta - Ajuizados</div>
-    <div class="page-title">Renegociação</div>
+    <div class="hero">Renegociação</div>
 
-    <div class="panel printKeep">
-      <div class="panel-hd">
-        <div class="ttl">Dados do contrato e parâmetros</div>
-        <div class="pill" id="statusPill">pronto</div>
-      </div>
-
-      <div class="panel-bd split">
-        <!-- Coluna 1 -->
-        <div>
-          <div class="grid">
+    <div class="grid">
+      <!-- Inputs -->
+      <div class="card">
+        <div class="hd">
+          <div>1) Dados do contrato e parâmetros</div>
+          <div class="badge" id="badgeOk">simulação processada</div>
+        </div>
+        <div class="content">
+          <div class="twoCol">
             <div>
               <label>Nº(s) do(s) contrato(s)</label>
-              <input id="contratos" type="text" placeholder="Ex.: 039145" />
+              <input id="contratos" value="39145" />
             </div>
             <div>
               <label>Colaborador responsável</label>
-              <input id="colaborador" type="text" placeholder="Ex.: Alex" />
+              <input id="colaborador" value="Lauriana" />
             </div>
-          </div>
-
-          <div class="grid" style="margin-top:12px">
             <div>
               <label>Nome do solicitante</label>
-              <input id="solicitante" type="text" placeholder="Nome completo" />
+              <input id="solicitante" value="Eduardo Araujo" />
             </div>
             <div>
               <label>E-mail de contato</label>
-              <input id="email" type="email" placeholder="nome@dominio.com" />
+              <input id="email" value="economista.araujo@gmail.com" />
             </div>
-          </div>
-
-          <div class="grid" style="margin-top:12px">
             <div>
               <label>Valor negociado (R$)</label>
-              <input id="negociado" type="text" value="35000,00" inputmode="decimal" />
+              <input id="negociado" value="35000,00" inputmode="decimal" />
             </div>
             <div>
               <label>Sinal (R$)</label>
-              <input id="sinal" type="text" value="7000,00" inputmode="decimal" />
+              <input id="sinal" value="7000,00" inputmode="decimal" />
             </div>
-          </div>
-
-          <div class="grid" style="margin-top:12px">
             <div>
               <label>Taxa de juros (% a.a.)</label>
-              <input id="jurosAnual" type="text" value="8" inputmode="decimal" />
+              <input id="jurosAA" value="8" inputmode="decimal" />
             </div>
             <div>
               <label>Periodicidade</label>
@@ -369,837 +245,549 @@
                 <option value="MENSAL">Mensal</option>
               </select>
             </div>
-          </div>
-
-          <div class="grid" style="margin-top:12px">
             <div>
               <label>Número de prestações (n)</label>
-              <input id="nParcelas" type="number" value="5" min="1" step="1" />
+              <input id="n" value="5" inputmode="numeric" />
             </div>
             <div>
-              <label>1º vencimento</label>
-              <input id="primeiroVenc" type="date" />
+              <label>1º vencimento (dd/mm/aaaa)</label>
+              <input id="primeiroVenc" value="02/03/2027" inputmode="numeric" maxlength="10" />
             </div>
-          </div>
-
-          <div class="grid" style="margin-top:12px">
             <div>
-              <label>Data-base (referência)</label>
-              <input id="dataBase" type="date" />
+              <label>Data-base (assinatura) (dd/mm/aaaa)</label>
+              <input id="dataBase" value="25/12/2025" inputmode="numeric" maxlength="10" />
             </div>
             <div>
               <label>Convenção de dias</label>
               <select id="dayCount">
                 <option value="ACT365" selected>ACT/365 (dias corridos)</option>
-                <option value="ACT360">ACT/360 (dias corridos)</option>
               </select>
             </div>
           </div>
 
-          <div class="grid" style="margin-top:12px">
-            <div>
-              <label>Índice TR (opcional)</label>
-              <select id="modoTR">
-                <option value="SEM_TR" selected>Somente taxa (sem TR)</option>
-                <option value="COM_TR">Taxa + TR (para desconto)</option>
-              </select>
-            </div>
-            <div>
-              <label>TR (% a.a.) se aplicável</label>
-              <input id="trAnual" type="text" value="0" inputmode="decimal" />
-            </div>
+          <div class="actions">
+            <button class="btn primary" id="btnCalc"><span id="btnCalcIcon"></span>Calcular quitação</button>
+            <button class="btn ghost" id="btnTabela">Ver tabela (fluxo)</button>
+            <button class="btn red" id="btnPDF">Gerar PDF</button>
           </div>
-
-          <div class="row screenOnly">
-            <button class="btn secondary" id="btnGerar">Ver Tabela Price</button>
-            <button class="btn secondary" id="btnImprimir">Gerar PDF (imprimir)</button>
-            <button class="btn secondary" id="btnCSV">Baixar CSV</button>
-            <a class="btn secondary" id="btnEmail" href="#" style="text-decoration:none; display:inline-block;">Montar e-mail</a>
-          </div>
-
-          <div class="note screenOnly">
-            Premissas: juros compostos com expoente fracionário; quitação pelo Método B (VP das parcelas vincendas). Convenção padrão: ACT/365.
-          </div>
+          <div class="note">Ação principal: calcular o valor para quitação por VP das parcelas vincendas. A tabela é apenas conferência do fluxo.</div>
         </div>
+      </div>
 
-        <!-- Coluna 2 -->
-        <div>
-          <div class="panel" style="margin-top:0">
-            <div class="panel-hd">
-              <div class="ttl">Quitação antecipada (Método B)</div>
-              <div class="pill" id="pillMetodo">VP das vincendas</div>
+      <!-- Quitação -->
+      <div class="card">
+        <div class="hd">
+          <div>2) Cálculo de quitação antecipada</div>
+          <div class="badge" id="badgeVP">VP</div>
+        </div>
+        <div class="content">
+          <div class="twoCol">
+            <div>
+              <label>Data de quitação (dd/mm/aaaa)</label>
+              <input id="dataQuitacao" value="03/02/2026" inputmode="numeric" maxlength="10" />
             </div>
-
-            <div class="panel-bd">
-              <div class="grid">
-                <div>
-                  <label>Data de quitação</label>
-                  <input id="dataQuitacao" type="date" />
-                </div>
-                <div>
-                  <label>Após qual parcela paga?</label>
-                  <select id="aposParcela">
-                    <option value="0" selected>Nenhuma paga (antes da 1ª)</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="row screenOnly">
-                <button class="btn" id="btnCalcularQuitacao">Calcular quitação</button>
-              </div>
-
-              <div class="kpis">
-                <div class="kpi big">
-                  <div class="lbl">Valor para quitação (VP)</div>
-                  <div class="val" id="kpiQuitacao">R$ 0,00</div>
-                </div>
-
-                <div class="kpi">
-                  <div class="lbl">PV financiado</div>
-                  <div class="val" id="kpiPV">R$ 0,00</div>
-                </div>
-                <div class="kpi">
-                  <div class="lbl">Prestação (Price)</div>
-                  <div class="val" id="kpiPMT">R$ 0,00</div>
-                </div>
-                <div class="kpi">
-                  <div class="lbl">Taxa efetiva (a.a.) p/ desconto</div>
-                  <div class="val" id="kpiTaxaEfetiva">0,000000%</div>
-                </div>
-                <div class="kpi">
-                  <div class="lbl">Hash (inputs)</div>
-                  <div class="val" id="kpiHash">-</div>
-                </div>
-              </div>
-
-              <div class="inlineStatus warn" id="inlineStatus">Status: aguardando cálculo.</div>
-              <div class="note mono" id="miniExplain"></div>
+            <div>
+              <label>Após qual parcela paga?</label>
+              <select id="aposParcela"></select>
             </div>
           </div>
 
-          <div class="panel" style="margin-top:14px">
-            <div class="panel-hd">
-              <div class="ttl">Observações para o relatório</div>
-              <div class="pill" id="pillHash">hash: -</div>
+          <div class="kpi" id="kpiBox" style="margin-top:12px; display:none;">
+            <div>
+              <div style="font-weight:900;color:#5c0b17;letter-spacing:.2px;">VALOR PARA QUITAÇÃO (VP DAS PARCELAS VINCENDAS)</div>
+              <p class="big" id="kpiVP">R$ 0,00</p>
+              <div class="sub" id="kpiMeta"></div>
             </div>
-            <div class="panel-bd">
-              <label>Observações</label>
-              <textarea id="observacoes" placeholder="Ex.: Acordo judicial, condições específicas, etc."></textarea>
-              <div class="note">
-                O PDF é formatado para leitura: resumo, valor de quitação em destaque, tabela com a linha de quitação marcada e anexo técnico para auditoria.
+            <div class="miniCards">
+              <div class="mini">
+                <div class="t">PV financiado</div>
+                <div class="v" id="miniPV">R$ 0,00</div>
+              </div>
+              <div class="mini">
+                <div class="t">Prestação (Price)</div>
+                <div class="v" id="miniPMT">R$ 0,00</div>
+              </div>
+              <div class="mini">
+                <div class="t">Taxa efetiva (a.a.)</div>
+                <div class="v" id="miniTaxa">0,000000%</div>
               </div>
             </div>
+            <div class="note" id="kpiNote"></div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Tabela -->
-    <div class="panel">
-      <div class="panel-hd">
-        <div class="ttl">Tabela Price</div>
-        <div class="pill" id="pillTotais">totais</div>
+    <!-- Results (minimal) -->
+    <div class="card" style="margin-top:16px; display:none;" id="cardMemoria">
+      <div class="hd">
+        <div>Memória de cálculo</div>
+        <div class="badge" style="display:block;background:#fff;color:#183549;border-color:rgba(31,125,170,.25)">auditável</div>
       </div>
-      <div class="panel-bd" style="overflow:auto">
-        <table id="tabela">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Vencimento</th>
-              <th class="right">Saldo inicial</th>
-              <th class="right">Juros</th>
-              <th class="right">Prestação</th>
-              <th class="right">Amortização</th>
-              <th class="right">Saldo final</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-        <div class="note" id="totais"></div>
+      <div class="content">
+        <div class="twoCol">
+          <div class="mini">
+            <div class="t">Identificação</div>
+            <div class="v" id="identTxt" style="font-weight:800"></div>
+            <div class="mutedRow" id="identSub"></div>
+          </div>
+          <div class="mini" style="border-color: rgba(176,0,32,.25); background: var(--dangerSoft);">
+            <div class="t" style="color:#7b2a36">Quitação (VP)</div>
+            <div class="v" id="memVP" style="color:var(--danger);font-size:20px;">R$ 0,00</div>
+            <div class="mutedRow" id="memVPSub" style="color:#7b2a36"></div>
+          </div>
+        </div>
+
+        <div class="sectionTitle">Fluxo natural e decisão de antecipar</div>
+        <div class="note" style="margin-top:-6px;">A linha “QUITAR” marca o evento de antecipação e mostra o valor presente (VP) a pagar.</div>
+        <div style="overflow:auto;">
+          <table id="tblPrice"></table>
+        </div>
+
+        <div class="sectionTitle">Diagrama do valor presente</div>
+        <div class="diagramWrap">
+          <p class="diagramTitle" id="diagTitle">Valor Presente para Quitação</p>
+          <div id="svgHost"></div>
+          <div class="diagramHint">As setas indicam as parcelas futuras. A linha vermelha tracejada representa o desconto para trazer os valores à data de quitação.</div>
+        </div>
+
+        <details class="collapse">
+          <summary>Detalhes técnicos (auditoria)</summary>
+          <div class="inner">
+            <div id="techTxt"></div>
+          </div>
+        </details>
       </div>
     </div>
-
-    <!-- Relatório (minimalista na tela; completo no PDF) -->
-    <details class="audit" id="auditBox">
-      <summary>Relatório e anexo técnico (auditoria)</summary>
-
-      <div class="report" id="report">
-        <h2>Proposta de quitação antecipada</h2>
-        <p class="lead" id="reportIntro"></p>
-
-        <div class="meta" id="reportMeta"></div>
-
-        <div class="summaryGrid">
-          <div class="summaryBox">
-            <div class="tag">Valor para quitação (VP)</div>
-            <div class="amount" id="reportQuitacaoBig">R$ 0,00</div>
-            <div class="small" id="reportQuitacaoSmall"></div>
-          </div>
-          <div class="techBox" id="reportParamsShort"></div>
-        </div>
-
-        <h3 style="margin:18px 0 8px; font-size:13px; text-transform:uppercase; letter-spacing:.25px; color:#183549;">Fluxo de pagamentos (Price)</h3>
-        <p class="lead" style="margin-top:0">A linha em vermelho marca a quitação antecipada na data escolhida.</p>
-        <div id="reportTabelaClone"></div>
-
-        <h3 style="margin:18px 0 8px; font-size:13px; text-transform:uppercase; letter-spacing:.25px; color:#183549;">Diagrama de quitação (visual)</h3>
-        <div id="timelineBox"></div>
-
-        <div class="printOnly" style="margin-top:18px; border-top:1px solid #e6eef6; padding-top:12px;">
-          <div style="font-size:12px; color:#5a7286; line-height:1.5;">
-            Anexo técnico (auditoria): premissas, fórmula de desconto e detalhamento do VP constam na última seção.
-          </div>
-        </div>
-
-        <h3 style="margin:18px 0 8px; font-size:13px; text-transform:uppercase; letter-spacing:.25px; color:#183549;">Anexo técnico (para auditoria)</h3>
-        <div class="meta" id="reportTech"></div>
-
-        <h3 style="margin:18px 0 8px; font-size:13px; text-transform:uppercase; letter-spacing:.25px; color:#183549;">Observações</h3>
-        <div class="meta" id="reportObs"></div>
-      </div>
-    </details>
-
-    <div class="toast" id="toast"></div>
   </div>
 
-<script>
-/* ===========================
-   Util
-=========================== */
-const el = (id)=>document.getElementById(id);
-const brl = new Intl.NumberFormat('pt-BR', { style:'currency', currency:'BRL' });
-function fmtMoney(x){ return brl.format(x || 0); }
+  <div class="toast" id="toast"></div>
 
-function iso(d){
-  const z = new Date(d);
-  const yyyy = z.getFullYear();
-  const mm = String(z.getMonth()+1).padStart(2,'0');
-  const dd = String(z.getDate()).padStart(2,'0');
-  return `${yyyy}-${mm}-${dd}`;
-}
-function fmtDateBR(d){
-  const z = new Date(d);
-  if (isNaN(z)) return '-';
-  const dd = String(z.getDate()).padStart(2,'0');
-  const mm = String(z.getMonth()+1).padStart(2,'0');
-  const yyyy = z.getFullYear();
-  return `${dd}/${mm}/${yyyy}`;
-}
-function parseNumberBR(v){
-  if (typeof v !== 'string') return Number(v || 0);
-  const s = v.trim().replace(/\s/g,'')
-    .replace(/\./g,'')
-    .replace(/,/g,'.')
-    .replace(/[^\d.-]/g,'');
-  const n = Number(s);
-  return Number.isFinite(n) ? n : 0;
-}
-function diffDays(d1, d2){
-  const a = new Date(d1); a.setHours(0,0,0,0);
-  const b = new Date(d2); b.setHours(0,0,0,0);
-  return Math.round((b - a) / (1000*60*60*24));
-}
-function addMonths(date, m){
-  const d = new Date(date);
-  const day = d.getDate();
-  d.setMonth(d.getMonth() + m);
-  if (d.getDate() < day) d.setDate(0);
-  return d;
-}
-function addYears(date, y){
-  const d = new Date(date);
-  d.setFullYear(d.getFullYear() + y);
-  return d;
-}
+  <!-- jsPDF -->
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
 
-/* ===========================
-   UI feedback
-=========================== */
-let toastTimer = null;
-function toast(msg){
-  const t = el('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(()=>t.classList.remove('show'), 1800);
-}
-function setStatus(kind, text){
-  const pill = el('statusPill');
-  pill.textContent = text;
-  pill.style.background = (kind === 'ok') ? '#e9fbf2' : (kind === 'warn') ? '#fff5e6' : '#ffe9ef';
-  pill.style.borderColor = (kind === 'ok') ? '#bfe8d4' : (kind === 'warn') ? '#f1d2a5' : '#f3b3c1';
-}
-function setInlineStatus(kind, msg){
-  const x = el('inlineStatus');
-  x.className = `inlineStatus ${kind}`;
-  x.textContent = msg;
-}
-function setLoading(isLoading, which){
-  const btnGerar = el('btnGerar');
-  const btnQuit = el('btnCalcularQuitacao');
-
-  if (which === 'tabela' || which === 'all'){
-    btnGerar.disabled = isLoading;
-    btnGerar.dataset.oldText ||= btnGerar.textContent;
-    btnGerar.textContent = isLoading ? 'Gerando...' : btnGerar.dataset.oldText;
-  }
-  if (which === 'quitacao' || which === 'all'){
-    btnQuit.disabled = isLoading;
-    btnQuit.dataset.oldText ||= btnQuit.textContent;
-    btnQuit.textContent = isLoading ? 'Calculando...' : btnQuit.dataset.oldText;
-  }
-}
-
-/* ===========================
-   Finance
-=========================== */
-function pmt(PV, i, n){
-  if (n <= 0) return 0;
-  if (Math.abs(i) < 1e-12) return PV / n;
-  const pow = Math.pow(1+i, n);
-  return PV * (i * pow) / (pow - 1);
-}
-function buildSchedule({PV, iPeriodo, n, primeiroVenc, periodicidade}){
-  let saldo = PV;
-  const PMT = pmt(PV, iPeriodo, n);
-  const rows = [];
-  for (let k=1; k<=n; k++){
-    const data = (periodicidade === 'MENSAL') ? addMonths(primeiroVenc, k-1) : addYears(primeiroVenc, k-1);
-    const juros = saldo * iPeriodo;
-    const amort = PMT - juros;
-    const saldoFim = saldo - amort;
-    rows.push({ k, data, saldoIni: saldo, juros, pmt: PMT, amort, saldoFim });
-    saldo = saldoFim;
-  }
-  // ajuste final para absorver erro numérico e zerar saldo
-  if (rows.length){
-    const last = rows[rows.length-1];
-    const ajuste = last.saldoFim;
-    last.amort = last.amort + ajuste;
-    last.saldoFim = 0;
-  }
-  return { rows, PMT };
-}
-function effectiveAnnualRate({jurosAnual, trAnual, modoTR}){
-  if (modoTR === 'COM_TR'){
-    // composição simples de duas taxas efetivas anuais
-    return (1+jurosAnual)*(1+trAnual) - 1;
-  }
-  return jurosAnual;
-}
-function discountFactor({taxaEfetivaAnual, dias, base}){
-  const denom = (base === 'ACT360') ? 360 : 365;
-  return 1 / Math.pow(1 + taxaEfetivaAnual, dias / denom);
-}
-function payoffMethodB({rows, kPago, dataQuitacao, taxaEfetivaAnual, base}){
-  const remaining = rows.filter(r => r.k > kPago);
-  let vp = 0;
-  const details = [];
-  for (const r of remaining){
-    const dias = diffDays(dataQuitacao, r.data);
-    const df = discountFactor({taxaEfetivaAnual, dias, base});
-    const vpParcela = r.pmt * df;
-    vp += vpParcela;
-    details.push({k:r.k, venc:r.data, dias, df, pmt:r.pmt, vp:vpParcela});
-  }
-  return { vp, remaining, details };
-}
-
-/* ===========================
-   Hash / audit
-=========================== */
-async function sha256(text){
-  const enc = new TextEncoder().encode(text);
-  const buf = await crypto.subtle.digest('SHA-256', enc);
-  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
-}
-async function computeHashFromInputs(){
-  const payload = {
-    contratos: el('contratos').value || '',
-    colaborador: el('colaborador').value || '',
-    solicitante: el('solicitante').value || '',
-    email: el('email').value || '',
-    negociado: el('negociado').value || '',
-    sinal: el('sinal').value || '',
-    jurosAnual: el('jurosAnual').value || '',
-    modoTR: el('modoTR').value || '',
-    trAnual: el('trAnual').value || '',
-    nParcelas: el('nParcelas').value || '',
-    periodicidade: el('periodicidade').value || '',
-    primeiroVenc: el('primeiroVenc').value || '',
-    dataBase: el('dataBase').value || '',
-    dayCount: el('dayCount').value || '',
-    dataQuitacao: el('dataQuitacao').value || '',
-    aposParcela: el('aposParcela').value || '',
-    observacoes: el('observacoes').value || ''
-  };
-  return await sha256(JSON.stringify(payload));
-}
-
-/* ===========================
-   State
-=========================== */
-let current = {
-  rows: [],
-  PMT: 0,
-  PV: 0,
-  iPeriodo: 0,
-  taxaEfetivaAnual: 0,
-  base: 'ACT365',
-  periodicidade: 'ANUAL',
-  kPago: 0,
-  dataQuitacao: null,
-  quitacaoVP: 0,
-  quitacaoDetails: []
-};
-
-function fillAposParcela(rows){
-  const sel = el('aposParcela');
-  const prev = sel.value;
-  sel.innerHTML = '';
-  const opt0 = document.createElement('option');
-  opt0.value = '0';
-  opt0.textContent = 'Nenhuma paga (antes da 1ª)';
-  sel.appendChild(opt0);
-  for (const r of rows){
-    const o = document.createElement('option');
-    o.value = String(r.k);
-    o.textContent = `Após pagar a parcela ${r.k} (venc. ${fmtDateBR(r.data)})`;
-    sel.appendChild(o);
-  }
-  // tenta preservar seleção
-  if ([...sel.options].some(o => o.value === prev)) sel.value = prev;
-}
-
-function renderTable({rows, kPago, dataQuitacao, quitacaoVP}){
-  const tbody = el('tabela').querySelector('tbody');
-  tbody.innerHTML = '';
-
-  const dtQ = dataQuitacao ? new Date(dataQuitacao) : null;
-  const cutoff = (kPago || 0);
-
-  // linha especial de quitação inserida após parcela paga (ou antes da 1ª)
-  const insertEventAt = cutoff; // 0 = topo, 1 = após parcela 1 etc.
-
-  function addEventRow(){
-    const tr = document.createElement('tr');
-    tr.className = 'eventRow';
-    tr.innerHTML = `
-      <td colspan="7">
-        QUITAÇÃO EM ${fmtDateBR(dtQ)} • Valor (VP das vincendas) = ${fmtMoney(quitacaoVP)}
-      </td>
-    `;
-    tbody.appendChild(tr);
-  }
-
-  if (insertEventAt === 0 && dtQ && quitacaoVP > 0) addEventRow();
-
-  for (const r of rows){
-    const tr = document.createElement('tr');
-    if (dtQ && quitacaoVP > 0 && r.k > cutoff) tr.classList.add('remaining');
-    tr.innerHTML = `
-      <td>${r.k}</td>
-      <td>${fmtDateBR(r.data)}</td>
-      <td class="right">${fmtMoney(r.saldoIni)}</td>
-      <td class="right">${fmtMoney(r.juros)}</td>
-      <td class="right">${fmtMoney(r.pmt)}</td>
-      <td class="right">${fmtMoney(r.amort)}</td>
-      <td class="right">${fmtMoney(r.saldoFim)}</td>
-    `;
-    tbody.appendChild(tr);
-
-    if (insertEventAt === r.k && dtQ && quitacaoVP > 0){
-      addEventRow();
+  <script>
+    // ---------- formatting ----------
+    const BRL = new Intl.NumberFormat('pt-BR', {style:'currency', currency:'BRL'});
+    function moneyToNumber(v){
+      if(v==null) return 0;
+      const s = String(v).trim().replace(/[^\d,.-]/g,'').replace(/\./g,'').replace(',', '.');
+      const n = Number(s);
+      return Number.isFinite(n) ? n : 0;
     }
-  }
-}
+    function toBRL(x){ return BRL.format(x || 0); }
 
-function cloneTableIntoReport(){
-  const table = el('tabela').cloneNode(true);
-  table.id = 'tabelaRelatorio';
-  table.style.marginTop = '0';
-  el('reportTabelaClone').innerHTML = '';
-  el('reportTabelaClone').appendChild(table);
-}
+    function pad2(n){ return String(n).padStart(2,'0'); }
+    function dateToBR(d){ return `${pad2(d.getDate())}/${pad2(d.getMonth()+1)}/${d.getFullYear()}`; }
+    function parseBRDate(s){
+      const m = String(s||'').match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+      if(!m) return null;
+      const dd = Number(m[1]), mm = Number(m[2]), yy = Number(m[3]);
+      const d = new Date(yy, mm-1, dd);
+      if(d.getFullYear()!==yy || d.getMonth()!==mm-1 || d.getDate()!==dd) return null;
+      return d;
+    }
+    function maskDateInput(el){
+      el.addEventListener('input', ()=>{
+        let v = el.value.replace(/[^\d]/g,'');
+        if(v.length>8) v=v.slice(0,8);
+        if(v.length>=5) el.value = v.slice(0,2)+'/'+v.slice(2,4)+'/'+v.slice(4);
+        else if(v.length>=3) el.value = v.slice(0,2)+'/'+v.slice(2);
+        else el.value = v;
+      });
+      el.addEventListener('blur', ()=>{
+        const d = parseBRDate(el.value);
+        if(!d) return;
+        el.value = dateToBR(d);
+      });
+    }
 
-/* ===========================
-   Timeline (estilo do seu print)
-=========================== */
-function buildSimpleTimeline({kPago, rows, dataQuitacao, quitacaoVP}){
-  const dtQ = new Date(dataQuitacao);
-  if (isNaN(dtQ) || !(quitacaoVP > 0)) return '';
+    // ---------- math ----------
+    function pmt(PV, i, n){
+      if(n<=0) return 0;
+      if(Math.abs(i) < 1e-12) return PV/n;
+      const pow = Math.pow(1+i, n);
+      return PV*(i*pow)/(pow-1);
+    }
+    function addMonths(dt, m){
+      const d = new Date(dt.getTime());
+      const y = d.getFullYear();
+      const mo = d.getMonth();
+      const day = d.getDate();
+      const target = new Date(y, mo+m, 1);
+      const maxDay = new Date(target.getFullYear(), target.getMonth()+1, 0).getDate();
+      target.setDate(Math.min(day, maxDay));
+      return target;
+    }
+    function addYears(dt, y){
+      const d = new Date(dt.getTime());
+      const target = new Date(d.getFullYear()+y, d.getMonth(), d.getDate());
+      // handle Feb 29
+      if(target.getMonth()!==d.getMonth()) return new Date(d.getFullYear()+y, d.getMonth(), 28);
+      return target;
+    }
+    function discountFactor(taxaAA, dias, base=365){
+      return 1 / Math.pow(1+taxaAA, dias/base);
+    }
 
-  const remaining = rows.filter(r => r.k > kPago);
-  const shown = remaining.slice(0, 6);
+    // ---------- UI helpers ----------
+    const toast = (msg)=>{
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      setTimeout(()=>el.classList.remove('show'), 1800);
+    }
+    const setBusy = (busy)=>{
+      const btn = document.getElementById('btnCalc');
+      const icon = document.getElementById('btnCalcIcon');
+      btn.disabled = !!busy;
+      icon.innerHTML = busy ? '<span class="spinner"></span>' : '';
+    }
 
-  const W = 920, H = 220;
-  const left = 80, right = 50;
-  const axisY = 120;
-  const startX = left, endX = W - right;
+    // ---------- state ----------
+    let STATE = { rows:[], details:[], vp:0, PV:0, PMT:0, i:0 };
 
-  const maxK = (rows.length || 1);
-  function xForK(k){
-    const span = endX - startX;
-    return startX + (k / maxK) * span;
-  }
+    function syncAposParcelaOptions(n){
+      const sel = document.getElementById('aposParcela');
+      const current = Number(sel.value || 1);
+      sel.innerHTML = '';
+      for(let k=0;k<=n;k++){
+        const opt = document.createElement('option');
+        opt.value = String(k);
+        opt.textContent = (k===0) ? 'Nenhuma parcela paga (após 0)' : `Após pagar a parcela ${k}`;
+        sel.appendChild(opt);
+      }
+      sel.value = String(Math.min(Math.max(current,0), n));
+    }
 
-  const parts = [];
-  parts.push(`<svg width="100%" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`);
+    function readInputs(){
+      const contratos = document.getElementById('contratos').value.trim();
+      const colaborador = document.getElementById('colaborador').value.trim();
+      const solicitante = document.getElementById('solicitante').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const negociado = moneyToNumber(document.getElementById('negociado').value);
+      const sinal = moneyToNumber(document.getElementById('sinal').value);
+      const jurosAA = Number(String(document.getElementById('jurosAA').value).replace(',','.'))/100;
+      const periodicidade = document.getElementById('periodicidade').value;
+      const n = Number(document.getElementById('n').value);
+      const primeiroVenc = parseBRDate(document.getElementById('primeiroVenc').value);
+      const dataBase = parseBRDate(document.getElementById('dataBase').value);
+      const dataQuitacao = parseBRDate(document.getElementById('dataQuitacao').value);
+      const aposParcela = Number(document.getElementById('aposParcela').value);
 
-  // eixo
-  parts.push(`<line x1="${startX}" y1="${axisY}" x2="${endX}" y2="${axisY}" stroke="#1f7daa" stroke-width="3"/>`);
-  parts.push(`<polygon points="${endX},${axisY} ${endX-10},${axisY-6} ${endX-10},${axisY+6}" fill="#1f7daa"/>`);
+      if(!primeiroVenc || !dataQuitacao || !dataBase || !Number.isFinite(jurosAA) || !Number.isFinite(n) || n<=0){
+        return { ok:false };
+      }
 
-  // texto esquerda
-  parts.push(`<text x="${startX-6}" y="42" font-size="18" fill="#0f2233" font-family="ui-sans-serif" font-weight="800" text-anchor="start">Valor Presente para</text>`);
-  parts.push(`<text x="${startX-6}" y="66" font-size="18" fill="#0f2233" font-family="ui-sans-serif" font-weight="800" text-anchor="start">Quitação: </text>`);
-  parts.push(`<text x="${startX+155}" y="66" font-size="18" fill="#0f2233" font-family="ui-monospace" font-weight="900" text-anchor="start">${fmtMoney(quitacaoVP)}</text>`);
+      const PV = Math.max(0, negociado - sinal);
+      const i = (periodicidade==='MENSAL') ? Math.pow(1+jurosAA, 1/12)-1 : jurosAA;
+      return { ok:true, contratos, colaborador, solicitante, email, negociado, sinal, jurosAA, periodicidade, n, primeiroVenc, dataBase, dataQuitacao, aposParcela, PV, i };
+    }
 
-  parts.push(`<text x="${startX}" y="${axisY+44}" font-size="16" fill="#0f2233" font-family="ui-sans-serif" text-anchor="start">Data de quitação:</text>`);
-  parts.push(`<text x="${startX}" y="${axisY+70}" font-size="18" fill="#0f2233" font-family="ui-monospace" font-weight="900" text-anchor="start">${fmtDateBR(dtQ)}</text>`);
+    function buildSchedule(PV, i, n, primeiroVenc, periodicidade){
+      const PMT = pmt(PV, i, n);
+      let saldo = PV;
+      const rows = [];
+      for(let k=1;k<=n;k++){
+        const venc = (periodicidade==='MENSAL') ? addMonths(primeiroVenc, k-1) : addYears(primeiroVenc, k-1);
+        const juros = saldo*i;
+        const amort = PMT - juros;
+        const saldoFim = saldo - amort;
+        rows.push({k, venc, saldoIni:saldo, juros, PMT, amort, saldoFim});
+        saldo = saldoFim;
+      }
+      // ajuste final para saldo=0
+      const last = rows[rows.length-1];
+      const ajuste = last.saldoFim;
+      last.amort += ajuste;
+      last.saldoFim = 0;
+      return { rows, PMT };
+    }
 
-  // seta vertical azul para "VP"
-  parts.push(`<line x1="${startX+20}" y1="${axisY}" x2="${startX+20}" y2="${axisY-70}" stroke="#1f7daa" stroke-width="3"/>`);
-  parts.push(`<polygon points="${startX+20},${axisY-80} ${startX+14},${axisY-68} ${startX+26},${axisY-68}" fill="#1f7daa"/>`);
+    function calcQuitacao(rows, kPago, dataQuitacao, taxaAA){
+      const base = 365;
+      const remaining = rows.filter(r => r.k > kPago);
+      let vp = 0;
+      const details = remaining.map(r => {
+        const dias = Math.round((r.venc - dataQuitacao) / (1000*60*60*24));
+        const df = discountFactor(taxaAA, dias, base);
+        const vpParc = r.PMT * df;
+        vp += vpParc;
+        return {k:r.k, venc:r.venc, dias, df, PMT:r.PMT, vpParc};
+      });
+      return { vp, details, vincendas: remaining.length };
+    }
 
-  // linhas verticais para parcelas restantes
-  const pmtVal = rows[0]?.pmt || 0;
-  shown.forEach(r=>{
-    const x = xForK(r.k);
-    // tick no eixo
-    parts.push(`<line x1="${x}" y1="${axisY-8}" x2="${x}" y2="${axisY+8}" stroke="#0f2233" stroke-width="2"/>`);
-    // número
-    parts.push(`<text x="${x}" y="${axisY-16}" font-size="22" fill="#0f2233" font-family="ui-sans-serif" font-weight="800" text-anchor="middle">${r.k}</text>`);
-    // seta para baixo
-    parts.push(`<line x1="${x}" y1="${axisY}" x2="${x}" y2="${axisY+58}" stroke="#1f7daa" stroke-width="3"/>`);
-    parts.push(`<polygon points="${x},${axisY+70} ${x-6},${axisY+58} ${x+6},${axisY+58}" fill="#1f7daa"/>`);
-    // valor parcela
-    parts.push(`<text x="${x}" y="${axisY+96}" font-size="16" fill="#0f2233" font-family="ui-monospace" font-weight="800" text-anchor="middle">${fmtMoney(pmtVal)}</text>`);
-  });
+    function renderTable(rows, kPago, dataQuitacao, vp){
+      const tbl = document.getElementById('tblPrice');
+      const head = `
+        <thead>
+          <tr>
+            <th>#</th><th>Vencimento</th>
+            <th>Saldo inicial</th><th>Juros</th><th>Prestação</th><th>Amortização</th><th>Saldo final</th>
+          </tr>
+        </thead>`;
+      let body = '<tbody>';
 
-  // bracket tracejado vermelho sobre as vincendas mostradas
-  if (shown.length){
-    const x1 = xForK(shown[0].k);
-    const x2 = xForK(shown[shown.length-1].k);
-    const yTop = 86;
+      rows.forEach(r=>{
+        if(r.k === kPago+1){
+          body += `
+            <tr class="eventRow">
+              <td colspan="7">
+                QUITAR em <b>${dateToBR(dataQuitacao)}</b> &nbsp;•&nbsp; <span class="small">VP das vincendas</span> <b>${toBRL(vp)}</b>
+              </td>
+            </tr>`;
+        }
+        body += `
+          <tr>
+            <td>${r.k}</td>
+            <td>${dateToBR(r.venc)}</td>
+            <td>${toBRL(r.saldoIni)}</td>
+            <td>${toBRL(r.juros)}</td>
+            <td>${toBRL(r.PMT)}</td>
+            <td>${toBRL(r.amort)}</td>
+            <td>${toBRL(r.saldoFim)}</td>
+          </tr>`;
+      });
+      body += '</tbody>';
+      tbl.innerHTML = head + body;
+    }
 
-    parts.push(`<line x1="${x2}" y1="${yTop}" x2="${x1}" y2="${yTop}" stroke="#b00020" stroke-width="3" stroke-dasharray="8 6"/>`);
-    parts.push(`<polygon points="${x1},${yTop} ${x1+10},${yTop-6} ${x1+10},${yTop+6}" fill="#b00020"/>`);
+    function renderDiagram(details, dataQuitacao, vp){
+      // Minimal SVG similar to user's reference: baseline, arrows at parcel indices, dashed red bracket from 1..m
+      const host = document.getElementById('svgHost');
+      const n = details.length;
+      const W = 920, H = 220, padL=60, padR=30, yBase=140;
+      const x0 = padL, x1 = W-padR;
+      const step = (x1-x0)/Math.max(1, n);
+      const vpTxt = toBRL(vp);
 
-    shown.forEach(r=>{
-      const x = xForK(r.k);
-      parts.push(`<line x1="${x}" y1="${yTop}" x2="${x}" y2="${yTop+26}" stroke="#b00020" stroke-width="3" stroke-dasharray="6 5"/>`);
+      // markers at 1..n, arrows down
+      let ticks = '';
+      for(let i=1;i<=n;i++){
+        const x = x0 + step*i;
+        ticks += `
+          <line x1="${x}" y1="${yBase-6}" x2="${x}" y2="${yBase+55}" stroke="#0f2233" stroke-width="2"/>
+          <polygon points="${x-6},${yBase+55} ${x+6},${yBase+55} ${x},${yBase+68}" fill="#0f2233" />
+          <text x="${x}" y="${yBase+88}" font-size="14" font-weight="800" fill="#0f2233" text-anchor="middle">${i}</text>
+        `;
+      }
+
+      // red dashed top bracket
+      const xStart = x0 + step*1;
+      const xEnd = x0 + step*n;
+      let redDrops = '';
+      for(let i=1;i<=n;i++){
+        const x = x0 + step*i;
+        redDrops += `<line x1="${x}" y1="${yBase-55}" x2="${x}" y2="${yBase-30}" stroke="#b00020" stroke-width="3" stroke-dasharray="8 6" />`;
+      }
+
+      const svg = `
+      <svg viewBox="0 0 ${W} ${H}" width="100%" height="220" role="img" aria-label="Diagrama de valor presente">
+        <!-- axes -->
+        <line x1="${x0}" y1="${yBase}" x2="${x1}" y2="${yBase}" stroke="#0f2233" stroke-width="3"/>
+        <polygon points="${x1},${yBase} ${x1-12},${yBase-6} ${x1-12},${yBase+6}" fill="#0f2233"/>
+
+        <line x1="${x0}" y1="${yBase}" x2="${x0}" y2="${yBase-95}" stroke="#1f7daa" stroke-width="4"/>
+        <polygon points="${x0},${yBase-95} ${x0-6},${yBase-83} ${x0+6},${yBase-83}" fill="#1f7daa"/>
+
+        <!-- title -->
+        <text x="${x0+10}" y="40" font-size="22" font-weight="900" fill="#0f2233">Valor Presente para Quitação:</text>
+        <text x="${x0+10}" y="72" font-size="28" font-weight="900" fill="#0f2233">${vpTxt}</text>
+
+        <!-- quit date -->
+        <text x="${x0+5}" y="${yBase+38}" font-size="14" font-weight="800" fill="#0f2233">Data de quitação:</text>
+        <text x="${x0+5}" y="${yBase+60}" font-size="16" font-weight="900" fill="#0f2233">${dateToBR(dataQuitacao)}</text>
+
+        <!-- red dashed bracket -->
+        <line x1="${xStart}" y1="${yBase-55}" x2="${xEnd}" y2="${yBase-55}" stroke="#b00020" stroke-width="4" stroke-dasharray="10 8"/>
+        <polygon points="${xStart},${yBase-55} ${xStart+14},${yBase-61} ${xStart+14},${yBase-49}" fill="#b00020"/>
+        ${redDrops}
+
+        <!-- ticks/arrows -->
+        ${ticks}
+      </svg>`;
+      host.innerHTML = svg;
+    }
+
+    function sha256Hex(str){
+      // browser-native crypto
+      const enc = new TextEncoder().encode(str);
+      return crypto.subtle.digest('SHA-256', enc).then(buf=>{
+        const bytes = Array.from(new Uint8Array(buf));
+        return bytes.map(b=>b.toString(16).padStart(2,'0')).join('');
+      });
+    }
+
+    async function runSimulation(){
+      setBusy(true);
+      document.getElementById('badgeOk').style.display = 'none';
+
+      // small delay to make feedback visible in fast machines
+      await new Promise(r=>setTimeout(r, 120));
+
+      const inp = readInputs();
+      if(!inp.ok){
+        setBusy(false);
+        toast('Preencha datas no padrão dd/mm/aaaa');
+        return;
+      }
+
+      syncAposParcelaOptions(inp.n);
+
+      const sch = buildSchedule(inp.PV, inp.i, inp.n, inp.primeiroVenc, inp.periodicidade);
+      const q = calcQuitacao(sch.rows, inp.aposParcela, inp.dataQuitacao, inp.jurosAA);
+
+      STATE = { rows: sch.rows, PMT: sch.PMT, PV: inp.PV, i: inp.i, vp: q.vp, details: q.details, vincendas: q.vincendas, inp };
+
+      // KPIs
+      document.getElementById('kpiBox').style.display = 'grid';
+      document.getElementById('kpiVP').textContent = toBRL(q.vp);
+      document.getElementById('kpiMeta').textContent = `Data: ${dateToBR(inp.dataQuitacao)} | Após parcela: ${inp.aposParcela} | Vincendas: ${q.vincendas}`;
+      document.getElementById('miniPV').textContent = toBRL(inp.PV);
+      document.getElementById('miniPMT').textContent = toBRL(sch.PMT);
+      document.getElementById('miniTaxa').textContent = (inp.jurosAA*100).toFixed(6) + '%';
+      document.getElementById('kpiNote').textContent = 'Quitação = Σ (PMT × DF), com DF = 1/(1+r)^(dias/365).';
+
+      // Memory (minimal)
+      document.getElementById('cardMemoria').style.display = 'block';
+      document.getElementById('identTxt').textContent = `Contrato(s): ${inp.contratos}`;
+      document.getElementById('identSub').textContent = `Solicitante: ${inp.solicitante} | Contato: ${inp.email} | Colaborador: ${inp.colaborador} | Data-base: ${dateToBR(inp.dataBase)}`;
+      document.getElementById('memVP').textContent = toBRL(q.vp);
+      document.getElementById('memVPSub').textContent = `Quitação em ${dateToBR(inp.dataQuitacao)} | Após parcela ${inp.aposParcela} | Vincendas ${q.vincendas}`;
+
+      renderTable(sch.rows, inp.aposParcela, inp.dataQuitacao, q.vp);
+      renderDiagram(q.details, inp.dataQuitacao, q.vp);
+
+      // tech hash
+      const payload = {
+        contratos: inp.contratos, colaborador: inp.colaborador, solicitante: inp.solicitante, email: inp.email,
+        negociado: document.getElementById('negociado').value, sinal: document.getElementById('sinal').value,
+        jurosAA: document.getElementById('jurosAA').value, periodicidade: inp.periodicidade, n: inp.n,
+        primeiroVenc: document.getElementById('primeiroVenc').value, dataBase: document.getElementById('dataBase').value,
+        dayCount: 'ACT/365', dataQuitacao: document.getElementById('dataQuitacao').value, aposParcela: inp.aposParcela
+      };
+      const h = await sha256Hex(JSON.stringify(payload));
+      document.getElementById('techTxt').innerHTML =
+        `<b>Premissas:</b> Price; desconto composto com expoente fracionário; base ACT/365.<br/>` +
+        `<b>Hash (SHA-256) dos inputs:</b> <span style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;">${h}</span>`;
+
+      document.getElementById('badgeOk').style.display = 'block';
+      document.getElementById('badgeVP').style.display = 'block';
+      toast('Simulação processada');
+      setBusy(false);
+    }
+
+    function ensureSimulated(){
+      if(!STATE.rows || STATE.rows.length===0) return runSimulation();
+      return Promise.resolve();
+    }
+
+    function pdfReport(){
+      if(!STATE.rows || STATE.rows.length===0){ toast('Calcule a quitação antes de gerar PDF'); return; }
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({unit:'pt', format:'a4'});
+      const margin = 48;
+
+      const inp = STATE.inp;
+      const title = 'Renegociação | Relatório de Quitação Antecipada';
+      doc.setFont('helvetica','bold'); doc.setFontSize(16);
+      doc.text(title, margin, 52);
+
+      doc.setFont('helvetica','normal'); doc.setFontSize(10);
+      doc.setTextColor(90,114,134);
+      doc.text('Resumo do fluxo natural (Tabela Price) e decisão de antecipar via Valor Presente (VP).', margin, 72);
+
+      doc.setTextColor(15,34,51);
+      doc.setFontSize(10);
+      doc.text(`Contrato(s): ${inp.contratos}   Solicitante: ${inp.solicitante}`, margin, 98);
+      doc.text(`Contato: ${inp.email}   Colaborador: ${inp.colaborador}`, margin, 114);
+      doc.text(`Data-base: ${dateToBR(inp.dataBase)}   1º vencimento: ${dateToBR(inp.primeiroVenc)}`, margin, 130);
+
+      // KPI box
+      doc.setDrawColor(215,230,242);
+      doc.setFillColor(253,236,238);
+      doc.roundedRect(margin, 148, 520, 64, 10, 10, 'FD');
+
+      doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(123,42,54);
+      doc.text('VALOR PARA QUITAÇÃO (VP DAS PARCELAS VINCENDAS)', margin+14, 168);
+      doc.setFontSize(18); doc.setTextColor(176,0,32);
+      doc.text(toBRL(STATE.vp), margin+14, 192);
+
+      doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(123,42,54);
+      doc.text(`Quitação em ${dateToBR(inp.dataQuitacao)} | Após parcela ${inp.aposParcela} | Vincendas ${STATE.vincendas}`, margin+14, 208);
+
+      // Table: natural flow + decision row
+      const head = [['#','Vencimento','Saldo ini.','Juros','Prestação','Amort.','Saldo fim.']];
+      const body = [];
+      STATE.rows.forEach(r=>{
+        if(r.k === inp.aposParcela+1){
+          body.push([{content:`QUITAR em ${dateToBR(inp.dataQuitacao)} | VP: ${toBRL(STATE.vp)}`, colSpan:7, styles:{fillColor:[253,236,238], textColor:[176,0,32], fontStyle:'bold', halign:'left'}}]);
+        }
+        body.push([
+          String(r.k),
+          dateToBR(r.venc),
+          toBRL(r.saldoIni),
+          toBRL(r.juros),
+          toBRL(r.PMT),
+          toBRL(r.amort),
+          toBRL(r.saldoFim)
+        ]);
+      });
+
+      doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(24,53,73);
+      doc.text('Fluxo natural de pagamento e decisão de antecipar', margin, 244);
+
+      doc.autoTable({
+        startY: 258,
+        head, body,
+        styles: { font:'helvetica', fontSize:8, cellPadding:4, lineColor:[237,244,251], lineWidth:0.5 },
+        headStyles: { fillColor:[247,251,255], textColor:[24,53,73] },
+        columnStyles: { 0:{halign:'center'}, 1:{halign:'left'} },
+        tableLineColor:[215,230,242], tableLineWidth:0.8,
+        margin: {left: margin, right: margin}
+      });
+
+      // technical footer
+      const endY = doc.lastAutoTable.finalY + 18;
+      doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(24,53,73);
+      doc.text('Detalhes técnicos (auditoria)', margin, endY);
+      doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(90,114,134);
+      doc.text('Premissas: Price; desconto composto com expoente fracionário; base ACT/365.', margin, endY+14);
+
+      // hash
+      const tech = document.getElementById('techTxt').innerText.replace(/\s+/g,' ').trim();
+      doc.text(tech.slice(0, 110), margin, endY+28);
+      if(tech.length>110) doc.text(tech.slice(110, 220), margin, endY+40);
+
+      doc.save(`Relatorio_Quitacao_${inp.contratos || 'contrato'}.pdf`);
+      toast('PDF gerado');
+    }
+
+    // ---------- events ----------
+    document.getElementById('btnCalc').addEventListener('click', runSimulation);
+    document.getElementById('btnTabela').addEventListener('click', async ()=>{
+      await ensureSimulated();
+      document.getElementById('cardMemoria').scrollIntoView({behavior:'smooth', block:'start'});
+      toast('Tabela exibida');
     });
-  }
-
-  // nota se truncou
-  if (remaining.length > shown.length){
-    parts.push(`<text x="${startX}" y="${H-12}" font-size="12" fill="#5a7286" font-family="ui-monospace">Mostrando ${shown.length} parcelas vincendas (o relatório lista todas).</text>`);
-  }
-
-  parts.push(`</svg>`);
-  return parts.join('');
-}
-
-/* ===========================
-   CSV / Email
-=========================== */
-function downloadCSV(){
-  if (!current.rows.length) return;
-  const lines = [];
-  lines.push(['parcela','vencimento','saldo_inicial','juros','prestacao','amortizacao','saldo_final'].join(';'));
-  for (const r of current.rows){
-    lines.push([
-      r.k,
-      iso(r.data),
-      r.saldoIni.toFixed(2).replace('.',','),
-      r.juros.toFixed(2).replace('.',','),
-      r.pmt.toFixed(2).replace('.',','),
-      r.amort.toFixed(2).replace('.',','),
-      r.saldoFim.toFixed(2).replace('.',',')
-    ].join(';'));
-  }
-  const blob = new Blob([lines.join('\n')], {type:'text/csv;charset=utf-8;'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'tabela_price.csv';
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
-}
-function mountEmailLink(){
-  const to = (el('email').value || '').trim();
-  const subject = encodeURIComponent('Proposta de quitação antecipada - Renegociação');
-  const body = encodeURIComponent(
-    `Resumo da simulação:\n\n` +
-    `Contratos: ${el('contratos').value || '-'}\n` +
-    `Solicitante: ${el('solicitante').value || '-'}\n` +
-    `Colaborador: ${el('colaborador').value || '-'}\n` +
-    `Valor financiado (negociado - sinal): ${fmtMoney(current.PV)}\n` +
-    `Prestação (Price): ${fmtMoney(current.PMT)}\n` +
-    `Quitação (VP) em ${fmtDateBR(current.dataQuitacao)} após parcela ${current.kPago}: ${fmtMoney(current.quitacaoVP)}\n\n` +
-    `Para o PDF, use "Gerar PDF (imprimir)" e salve como PDF.\n`
-  );
-  el('btnEmail').href = `mailto:${encodeURIComponent(to)}?subject=${subject}&body=${body}`;
-}
-
-/* ===========================
-   Core: gerar tabela + quitação
-=========================== */
-function getInputsOrThrow(){
-  const negociado = parseNumberBR(el('negociado').value);
-  const sinal = parseNumberBR(el('sinal').value);
-  const PV = negociado - sinal;
-  if (!(PV > 0)) throw new Error('PV inválido: valor negociado deve ser maior que o sinal.');
-
-  const periodicidade = el('periodicidade').value;
-  const n = Number(el('nParcelas').value);
-  if (!(n > 0)) throw new Error('Número de prestações (n) inválido.');
-
-  const primeiroVenc = new Date(el('primeiroVenc').value);
-  if (isNaN(primeiroVenc)) throw new Error('1º vencimento inválido.');
-
-  const jurosAnual = parseNumberBR(el('jurosAnual').value) / 100;
-  const trAnual = parseNumberBR(el('trAnual').value) / 100;
-  const modoTR = el('modoTR').value;
-  const base = el('dayCount').value;
-
-  const taxaEfetivaAnual = effectiveAnnualRate({jurosAnual, trAnual, modoTR});
-
-  // taxa por período para Price (TR não entra aqui; TR é opção para a taxa de desconto do VP)
-  const iPeriodo = (periodicidade === 'ANUAL')
-    ? jurosAnual
-    : (Math.pow(1+jurosAnual, 1/12) - 1);
-
-  return { PV, periodicidade, n, primeiroVenc, jurosAnual, trAnual, modoTR, base, taxaEfetivaAnual, iPeriodo };
-}
-
-async function generateOnlyTable(){
-  setLoading(true,'tabela');
-  setInlineStatus('warn','Processando tabela Price...');
-  try{
-    const inp = getInputsOrThrow();
-    const {rows, PMT} = buildSchedule({PV: inp.PV, iPeriodo: inp.iPeriodo, n: inp.n, primeiroVenc: inp.primeiroVenc, periodicidade: inp.periodicidade});
-    current.rows = rows;
-    current.PMT = PMT;
-    current.PV = inp.PV;
-    current.iPeriodo = inp.iPeriodo;
-    current.taxaEfetivaAnual = inp.taxaEfetivaAnual;
-    current.base = inp.base;
-    current.periodicidade = inp.periodicidade;
-
-    fillAposParcela(rows);
-
-    // render sem quitação destacada
-    renderTable({rows, kPago: 0, dataQuitacao: null, quitacaoVP: 0});
-
-    const totalPago = rows.reduce((s,r)=>s+r.pmt,0);
-    const totalJuros = rows.reduce((s,r)=>s+r.juros,0);
-    el('totais').textContent = `Totais no plano: pago = ${fmtMoney(totalPago)} | juros = ${fmtMoney(totalJuros)} | amortização = ${fmtMoney(totalPago-totalJuros)}.`;
-    el('pillTotais').textContent = `juros totais: ${fmtMoney(totalJuros)}`;
-
-    el('kpiPV').textContent = fmtMoney(inp.PV);
-    el('kpiPMT').textContent = fmtMoney(PMT);
-    el('kpiTaxaEfetiva').textContent = (inp.taxaEfetivaAnual*100).toFixed(6) + '%';
-
-    const h = await computeHashFromInputs();
-    el('pillHash').textContent = `hash: ${h.slice(0,10)}…`;
-    el('kpiHash').textContent = h.slice(0,12) + '…';
-
-    mountEmailLink();
-
-    setStatus('ok','tabela gerada');
-    setInlineStatus('ok','Tabela Price atualizada.');
-    toast('Tabela Price atualizada.');
-  } catch (e){
-    setStatus('err','erro');
-    setInlineStatus('err', e.message || 'Erro ao gerar tabela.');
-    toast('Erro ao gerar tabela.');
-  } finally {
-    setLoading(false,'tabela');
-  }
-}
-
-async function calculateQuitacao(){
-  setLoading(true,'quitacao');
-  setInlineStatus('warn','Calculando quitação (VP)...');
-  try{
-    // sempre garante tabela atualizada
-    const inp = getInputsOrThrow();
-    const {rows, PMT} = buildSchedule({PV: inp.PV, iPeriodo: inp.iPeriodo, n: inp.n, primeiroVenc: inp.primeiroVenc, periodicidade: inp.periodicidade});
-    current.rows = rows;
-    current.PMT = PMT;
-    current.PV = inp.PV;
-    current.iPeriodo = inp.iPeriodo;
-    current.taxaEfetivaAnual = inp.taxaEfetivaAnual;
-    current.base = inp.base;
-    current.periodicidade = inp.periodicidade;
-
-    fillAposParcela(rows);
-
-    const kPago = Number(el('aposParcela').value || 0);
-    const dataQuitacao = new Date(el('dataQuitacao').value);
-    if (isNaN(dataQuitacao)) throw new Error('Data de quitação inválida.');
-
-    const out = payoffMethodB({
-      rows,
-      kPago,
-      dataQuitacao,
-      taxaEfetivaAnual: inp.taxaEfetivaAnual,
-      base: inp.base
+    document.getElementById('btnPDF').addEventListener('click', async ()=>{
+      await ensureSimulated();
+      pdfReport();
     });
 
-    current.kPago = kPago;
-    current.dataQuitacao = dataQuitacao;
-    current.quitacaoVP = out.vp;
-    current.quitacaoDetails = out.details;
+    // re-sync options when n changes
+    document.getElementById('n').addEventListener('input', ()=>{
+      const n = Math.max(1, Number(document.getElementById('n').value||1));
+      syncAposParcelaOptions(n);
+    });
 
-    // KPIs
-    el('kpiQuitacao').textContent = fmtMoney(out.vp);
-    el('kpiPV').textContent = fmtMoney(inp.PV);
-    el('kpiPMT').textContent = fmtMoney(PMT);
-    el('kpiTaxaEfetiva').textContent = (inp.taxaEfetivaAnual*100).toFixed(6) + '%';
+    // apply masks
+    ['primeiroVenc','dataQuitacao','dataBase'].forEach(id=>maskDateInput(document.getElementById(id)));
 
-    // hash
-    const h = await computeHashFromInputs();
-    el('pillHash').textContent = `hash: ${h.slice(0,10)}…`;
-    el('kpiHash').textContent = h.slice(0,12) + '…';
-
-    // mini explicação (curta)
-    const denom = (inp.base === 'ACT360') ? 360 : 365;
-    el('miniExplain').textContent =
-      `VP = Σ parcela × DF; DF = 1 / (1 + r)^(dias/${denom}). Vincendas consideradas: ${out.details.length}.`;
-
-    // tabela com destaque da quitação + parcelas vincendas
-    renderTable({rows, kPago, dataQuitacao, quitacaoVP: out.vp});
-
-    // totais
-    const totalPago = rows.reduce((s,r)=>s+r.pmt,0);
-    const totalJuros = rows.reduce((s,r)=>s+r.juros,0);
-    el('totais').textContent = `Totais no plano: pago = ${fmtMoney(totalPago)} | juros = ${fmtMoney(totalJuros)} | amortização = ${fmtMoney(totalPago-totalJuros)}.`;
-    el('pillTotais').textContent = `juros totais: ${fmtMoney(totalJuros)}`;
-
-    // relatório bonito + técnico
-    updateReport({hash:h});
-
-    setStatus('ok','quitação calculada');
-    setInlineStatus('ok',`Quitação calculada: ${fmtMoney(out.vp)}.`);
-    toast('Quitação calculada.');
-    mountEmailLink();
-  } catch (e){
-    setStatus('err','erro');
-    setInlineStatus('err', e.message || 'Erro no cálculo.');
-    toast('Erro no cálculo.');
-  } finally {
-    setLoading(false,'quitacao');
-  }
-}
-
-/* ===========================
-   Report (PDF amigável + anexo técnico)
-=========================== */
-function updateReport({hash}){
-  const contratos = el('contratos').value || '-';
-  const solicitante = el('solicitante').value || '-';
-  const email = el('email').value || '-';
-  const colaborador = el('colaborador').value || '-';
-  const dataBase = el('dataBase').value ? fmtDateBR(new Date(el('dataBase').value)) : '-';
-
-  const modoTR = el('modoTR').value;
-  const trTxt = (modoTR === 'COM_TR') ? ` + TR (${parseNumberBR(el('trAnual').value).toFixed(6)}% a.a.)` : '';
-  const taxaTxt = `${parseNumberBR(el('jurosAnual').value).toFixed(6)}% a.a.${trTxt}`;
-
-  const periodicidade = el('periodicidade').value;
-  const n = Number(el('nParcelas').value || 0);
-  const primeiroVenc = el('primeiroVenc').value ? fmtDateBR(new Date(el('primeiroVenc').value)) : '-';
-
-  const dtQ = current.dataQuitacao ? fmtDateBR(current.dataQuitacao) : '-';
-
-  el('reportIntro').textContent =
-    `Documento gerado para apoiar proposta de renegociação, com quitação antecipada calculada pelo Método B (valor presente das parcelas vincendas).`;
-
-  el('reportMeta').textContent =
-    `Contratos: ${contratos}\n` +
-    `Solicitante: ${solicitante}\n` +
-    `E-mail: ${email}\n` +
-    `Colaborador: ${colaborador}\n` +
-    `Data-base: ${dataBase}`;
-
-  el('reportQuitacaoBig').textContent = fmtMoney(current.quitacaoVP || 0);
-  el('reportQuitacaoSmall').textContent =
-    `Data de quitação: ${dtQ} • Após parcela paga: ${current.kPago} • Parcelas vincendas consideradas: ${current.quitacaoDetails.length}.`;
-
-  el('reportParamsShort').innerHTML =
-    `Valor financiado (PV): <b>${fmtMoney(current.PV)}</b><br>` +
-    `Prestação (Price): <b>${fmtMoney(current.PMT)}</b><br>` +
-    `Taxa informada: <b>${taxaTxt}</b><br>` +
-    `Taxa efetiva usada no desconto (a.a.): <b>${(current.taxaEfetivaAnual*100).toFixed(6)}%</b><br>` +
-    `Periodicidade: <b>${periodicidade}</b> • n: <b>${n}</b><br>` +
-    `1º vencimento: <b>${primeiroVenc}</b><br>` +
-    `Convenção de dias: <b>${current.base}</b>`;
-
-  // Tabela no relatório
-  cloneTableIntoReport();
-
-  // Diagrama estilo print
-  el('timelineBox').innerHTML = buildSimpleTimeline({
-    kPago: current.kPago,
-    rows: current.rows,
-    dataQuitacao: current.dataQuitacao,
-    quitacaoVP: current.quitacaoVP
-  });
-
-  // Anexo técnico (curto, auditável)
-  const denom = (current.base === 'ACT360') ? 360 : 365;
-  const det = current.quitacaoDetails.map(d=>{
-    return `P${d.k} | venc ${fmtDateBR(d.venc)} | dias=${d.dias} | DF=${d.df.toFixed(10)} | VP=${fmtMoney(d.vp)}`;
-  }).join('\n');
-
-  el('reportTech').textContent =
-    `Método: Price (prestação constante).\n` +
-    `Quitação: Método B (VP das parcelas vincendas).\n` +
-    `Desconto: DF = 1 / (1 + r)^(dias/${denom}), com r = taxa efetiva anual.\n` +
-    `VP = Σ (parcela × DF).\n\n` +
-    `Detalhamento do VP:\n${det}\n\n` +
-    `Hash (SHA-256) dos inputs: ${hash}`;
-
-  el('reportObs').textContent = el('observacoes').value || '-';
-}
-
-/* ===========================
-   Defaults + events
-=========================== */
-function defaultDates(){
-  const hoje = new Date();
-  el('dataBase').value = iso(hoje);
-
-  // 1º vencimento coerente com periodicidade
-  const per = el('periodicidade').value;
-  el('primeiroVenc').value = iso(per === 'MENSAL' ? addMonths(hoje, 1) : addYears(hoje, 1));
-
-  // quitação padrão: daqui a 3 meses
-  el('dataQuitacao').value = iso(addMonths(hoje, 3));
-}
-
-function onPeriodChange(){
-  const hoje = new Date(el('dataBase').value || new Date());
-  const per = el('periodicidade').value;
-  el('primeiroVenc').value = iso(per === 'MENSAL' ? addMonths(hoje, 1) : addYears(hoje, 1));
-}
-
-el('btnGerar').addEventListener('click', generateOnlyTable);
-el('btnCalcularQuitacao').addEventListener('click', calculateQuitacao);
-el('btnCSV').addEventListener('click', downloadCSV);
-el('btnImprimir').addEventListener('click', ()=>window.print());
-el('btnEmail').addEventListener('click', mountEmailLink);
-el('periodicidade').addEventListener('change', ()=>{ onPeriodChange(); });
-
-defaultDates();
-// estado inicial minimalista: só tabela sem destaque
-generateOnlyTable();
-</script>
+    // init
+    syncAposParcelaOptions(Number(document.getElementById('n').value||5));
+  </script>
 </body>
 </html>
-```
